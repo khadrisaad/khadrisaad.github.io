@@ -3,24 +3,419 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate">
-<title>Guidr · Join the waitlist</title>
-<style>html,body{margin:0;height:100%;background:#0E58B8}#loading{display:grid;place-items:center;height:100%;font:16px system-ui;color:white}</style>
+<title>Guidr</title>
+<meta name="description" content="Travel, finally in one place. Guidr is a new way to discover places, plan trips and share them with the people you trust. Join the waitlist, coming to iOS and Android.">
+<link rel="icon" type="image/png" href="icon.png" id="fav">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#5FA8E8">
+<meta property="og:title" content="Guidr">
+<meta property="og:description" content="Travel, finally in one place. Join the waitlist, coming to iOS and Android.">
+<meta property="og:image" content="https://guidrtravel-cmd.github.io/og.png?v=5">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Guidr. Travel, finally in one place.">
+<meta property="og:site_name" content="Guidr">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://guidrtravel-cmd.github.io/og.png?v=5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A1F33;
+  --ink-70:rgba(10,31,51,.72);
+  --ink-55:rgba(10,31,51,.55);
+  --brand:#E24A00;
+  --brand-lite:#FF8526;
+  --err:#C23616;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  color:var(--ink);
+  font:400 16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  overflow-x:hidden;min-height:100svh;position:relative;
+}
+.bg{
+  position:absolute;inset:0;z-index:-1;overflow:hidden;background:#3F8FE0 url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAXADADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCXWrrTrrTkjtIghD5CYI8v1I+vpXPeWAemfrXTX3h+WAgwsLiNhkNGOR9RWY1mfSvepcnL7rueFWlU5veVjJ8ujy60vsjelH2RvStdDLnZnCKpFirUh0u4mAMUDuCcZVc81raba6ZFGpuoPNkHJJJ2j2xWc6sYK+5pCnOo7bFXSfEkDxl5IJYzyT5b9Mfzp8WpWFxNJyyguWB2/wAAHX8/50UV4EcRO7PZdKDSTRJNPZR2zSliuQdmVJye360glgyVEbMI+JG4GGxyAKKKKmLqxV0yqeFpN2aFi12zguCkVzIkYwP9Wfvc02XWdKGHlErb8sWwefwoorWnVk7sznTikkf/2Q==) center top/cover no-repeat;
+}
+.bg::after{content:"";position:absolute;inset:0;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:-1}
+.bg img{
+  position:relative;z-index:1;opacity:0;transition:opacity .6s;
+  width:100%;height:100%;object-fit:cover;object-position:center top;display:block;
+  animation:drift 60s ease-in-out infinite alternate;transform-origin:50% 100%;
+}
+.bg img.ready{opacity:1}
+@keyframes drift{from{transform:scale(1)}to{transform:scale(1.04)}}
+.scrim{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(46% 38% at 50% 30%, rgba(255,255,255,.5), rgba(255,255,255,0) 70%),
+    linear-gradient(rgba(255,255,255,.34), rgba(255,255,255,0) 24%),
+    linear-gradient(to top, rgba(255,255,255,.92) 0%, rgba(255,255,255,.55) 13%, rgba(255,255,255,0) 30%);
+}
+.page{display:flex;flex-direction:column;align-items:center;padding:0 22px;min-height:100svh}
+nav{
+  margin-top:20px;width:100%;max-width:1040px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+.brand img{
+  width:38px;height:38px;border-radius:11px;display:block;
+  box-shadow:0 4px 14px rgba(10,31,51,.22);
+}
+.brand span{
+  font-family:'Instrument Serif',Georgia,serif;font-style:italic;
+  font-size:27px;letter-spacing:-.01em;
+}
+nav .x{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:999px;color:var(--ink);
+  transition:.18s;text-decoration:none;
+}
+nav .x:hover{transform:translateY(-1px)}
+nav .x svg{width:14px;height:14px;fill:currentColor}
+.hero{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;width:100%;max-width:640px;
+  padding:clamp(24px,5vh,56px) 0 clamp(20px,4vh,40px);
+}
+.pill{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:8px 16px;border-radius:999px;
+  font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-70);
+}
+.pill .led{
+  width:7px;height:7px;border-radius:50%;background:var(--brand-lite);flex:none;
+  box-shadow:0 0 0 3px rgba(255,133,38,.2);animation:pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 3px rgba(255,133,38,.2)}50%{opacity:.55;box-shadow:0 0 0 5px rgba(255,133,38,.06)}}
+h1{
+  margin-top:22px;
+  font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:clamp(40px,7.6vw,72px);line-height:1.02;letter-spacing:-.02em;text-wrap:balance;
+}
+h1 em{
+  font-style:italic;white-space:nowrap;
+  background:linear-gradient(100deg,var(--brand-lite),var(--brand));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.lede{
+  margin-top:16px;max-width:470px;
+  font-size:clamp(15.5px,1.9vw,17px);line-height:1.6;color:var(--ink-70);text-wrap:pretty;
+}
+.card{
+  margin-top:26px;width:100%;max-width:440px;
+  padding:26px 26px 22px;border-radius:28px;text-align:center;
+}
+.card h2{
+  font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:29px;letter-spacing:-.015em;
+}
+.card .csub{margin-top:5px;font-size:13.5px;color:var(--ink-55)}
+.form{margin-top:14px;display:flex;gap:9px}
+.form input{
+  flex:1;min-width:0;height:50px;padding:0 19px;border-radius:999px;
+  border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.78);
+  box-shadow:inset 0 1px 3px rgba(10,31,51,.08);
+  font:inherit;font-size:15px;color:var(--ink);outline:none;
+  transition:border-color .16s, box-shadow .16s, background .16s;
+}
+.form input::placeholder{color:rgba(10,31,51,.38)}
+.form input:focus{background:rgba(255,255,255,.95);border-color:var(--brand-lite);box-shadow:0 0 0 4px rgba(255,133,38,.18)}
+.form button{
+  height:50px;padding:0 24px;border-radius:999px;border:0;cursor:pointer;flex:none;
+  font:inherit;font-size:15px;font-weight:600;letter-spacing:-.01em;color:#fff;
+  background:linear-gradient(140deg,var(--brand-lite),var(--brand));
+  box-shadow:0 8px 22px rgba(226,74,0,.38), inset 0 1px 0 rgba(255,255,255,.3);
+  transition:transform .16s, box-shadow .16s;
+}
+.form button:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(226,74,0,.48), inset 0 1px 0 rgba(255,255,255,.3)}
+.form button:active{transform:translateY(0)}
+.form button:disabled{opacity:.65;cursor:default;transform:none}
+.msg{margin-top:11px;font-size:13.5px;font-weight:500;min-height:20px}
+.msg.ok{color:#0E7A3D}
+.msg.err{color:var(--err)}
+.perk{
+  margin-top:16px;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:11px 14px;border-radius:16px;
+  background:linear-gradient(140deg, rgba(255,133,38,.14), rgba(226,74,0,.08));
+  border:1px solid rgba(226,74,0,.22);
+  font-size:13.5px;line-height:1.4;color:var(--ink-70);
+}
+.perk-ico{font-size:16px;flex:none}
+.perk b{color:var(--brand);font-weight:700}
+.counter{
+  margin-top:16px;display:inline-flex;align-items:baseline;gap:7px;
+  padding:8px 16px;border-radius:999px;
+  opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;
+}
+.counter.show{opacity:1;transform:none}
+.counter .n{
+  font-size:17px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+  color:var(--brand);
+}
+.counter .label{font-size:13.5px;color:var(--ink-70)}
+.soon{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.soon .lbl{
+  font-size:11px;font-weight:600;letter-spacing:.19em;text-transform:uppercase;color:var(--ink-55);
+}
+.stores{display:flex;align-items:center;justify-content:center;gap:clamp(22px,5vw,40px);flex-wrap:wrap}
+.store{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:clamp(15.5px,2.2vw,18px);font-weight:600;letter-spacing:-.02em;color:var(--ink);
+}
+.store svg{height:clamp(21px,3vw,25px);width:auto;flex:none;display:block;fill:var(--ink)}
+footer{
+  width:100%;text-align:center;
+  padding:22px 0 max(18px,env(safe-area-inset-bottom));
+  font-size:13px;color:var(--ink-55);
+}
+footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(10,31,51,.25)}
+footer a:hover{color:var(--ink)}
+
+/* ---------- liquid glass ----------
+   Heavy saturated blur, a gradient hairline rim (bright top-left, fading,
+   bright again bottom-right), a specular sheen across the top, and fine grain
+   so the glass never reads as flat plastic. */
+.glass{
+  position:relative;isolation:isolate;border:1px solid transparent;
+  background:linear-gradient(155deg,rgba(255,255,255,.6),rgba(255,255,255,.32));
+  backdrop-filter:blur(22px) saturate(1.8) brightness(1.05);-webkit-backdrop-filter:blur(22px) saturate(1.8) brightness(1.05);
+  box-shadow:0 10px 26px -10px rgba(10,31,51,.28), inset 0 1px 0 rgba(255,255,255,.95), inset 0 0 14px rgba(255,255,255,.25);
+}
+a.glass:hover{background:linear-gradient(155deg,rgba(255,255,255,.8),rgba(255,255,255,.5))}
+.card.glass{
+  background:linear-gradient(155deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.34) 48%,rgba(255,255,255,.48) 100%);
+  backdrop-filter:blur(34px) saturate(1.8) brightness(1.06);-webkit-backdrop-filter:blur(34px) saturate(1.8) brightness(1.06);
+  box-shadow:
+    0 30px 70px -18px rgba(10,31,51,.32),
+    0 10px 24px -12px rgba(10,31,51,.18),
+    inset 0 1.5px 0 rgba(255,255,255,.95),
+    inset 0 -1px 0 rgba(255,255,255,.4),
+    inset 0 0 28px rgba(255,255,255,.28);
+}
+.glass::before{
+  content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.2px;pointer-events:none;z-index:2;
+  background:linear-gradient(135deg,rgba(255,255,255,1) 0%,rgba(255,255,255,.35) 30%,rgba(255,255,255,.08) 55%,rgba(255,255,255,.55) 85%,rgba(255,255,255,.95) 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+}
+.glass::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:
+    radial-gradient(120% 60% at 20% -10%,rgba(255,255,255,.55),rgba(255,255,255,0) 55%),
+    radial-gradient(80% 50% at 110% 120%,rgba(255,255,255,.22),rgba(255,255,255,0) 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.card > *{position:relative;z-index:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .glass,.card.glass{background:rgba(255,255,255,.86)}
+}
+
+.up{opacity:0;animation:up .85s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.14s}.d3{animation-delay:.23s}.d4{animation-delay:.32s}.d5{animation-delay:.42s}.d6{animation-delay:.52s}
+@media(max-width:480px){
+  .card{margin-top:24px;padding:22px 20px 18px}
+  .lede{margin-top:12px}
+  .counter{margin-top:14px}
+  .soon{margin-top:20px}
+  .form{flex-direction:column}
+  .form input{flex:none;width:100%}
+  .form button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .up{opacity:1;transform:none}
+}
+</style>
+<script>
+function bgFail(img){
+  var alt = ['https://u308618484.p.clickup-attachments.com/u308618484/7522a741-4ee1-5a1f-a289-7c12d46c3822/bg.jpg?view=open'];
+  var i = +(img.dataset.try || 0);
+  img.removeAttribute('srcset');
+  if(i < alt.length){ img.dataset.try = i + 1; img.src = alt[i]; }
+  else { img.style.display = 'none'; }
+}
+</script>
 </head>
 <body>
-<div id="loading">Loading Guidr…</div>
+<div class="bg"><img id="bgimg" onload="this.classList.add('ready')" onerror="bgFail(this)" src="bg.jpg" srcset="bg-1x.jpg 1821w, bg.jpg 3642w" sizes="100vw" alt="" decoding="async" fetchpriority="high"></div>
+<div class="scrim"></div>
+
+<div class="page">
+
+  <nav class="up d1">
+    <a class="brand" href="./">
+      <img id="logo" src="data:image/png;base64,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" alt="Guidr">
+      <span>Guidr</span>
+    </a>
+    <a class="x glass" href="https://x.com/guidrtravel" target="_blank" rel="noopener" aria-label="Guidr on X">
+      <svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.2L24 22.8h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.2h7.6l5.2 6.9zm-1.3 19.4h2L6.5 3.3H4.3z"/></svg>
+    </a>
+  </nav>
+
+  <section class="hero">
+    <span class="pill glass up d2"><span class="led"></span>Waitlist now open</span>
+
+    <h1 class="up d3">Travel, finally <em>in one place.</em></h1>
+
+    <p class="lede up d4">Guidr is a new way to discover places, plan trips and share them with the people you trust. Be first in line.</p>
+
+    <div class="card glass up d5">
+      <h2>Join the waitlist</h2>
+      <p class="csub">Launch updates and early access. No spam, ever.</p>
+
+      <div class="perk">
+        <span class="perk-ico">🎁</span>
+        <span><b>Free 7-day Guidr trial</b> for every waitlist member at launch</span>
+      </div>
+
+      <form class="form" id="form" novalidate>
+        <input type="email" id="email" placeholder="you@gmail.com" autocomplete="email" inputmode="email" aria-label="Email address">
+        <button type="submit" id="btn">Join waitlist</button>
+      </form>
+
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="counter glass up d6" id="counter">
+      <span class="n" id="count">0</span>
+      <span class="label">travelers already in</span>
+    </div>
+
+    <div class="soon up d6">
+      <span class="lbl">Coming to</span>
+      <div class="stores">
+        <span class="store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.5c.03-2.6 2.120-3.85 2.21-3.91-1.2-1.77-3.08-2.01-3.750-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.380.81 1.4-.02 2.28-1.27 3.13-2.53.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.6c.71-.87 1.19-2.07 1.06-3.27-1.02.04-2.27.68-3.01 1.54-.66.76-1.24 1.99-1.09 3.16 1.14.09 2.31-.58 3.04-1.43"/></svg>
+          App Store
+        </span>
+        <span class="store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-1.078-.171zm0 2.067l-11.16 11.095c.353.076.729.031 1.066-.16l13.297-7.541z"/></svg>
+          Google Play
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="up d6">© 2026 Guidr · <a href="https://x.com/guidrtravel" target="_blank" rel="noopener">@guidrtravel</a></footer>
+</div>
+
 <script>
-(async function(){
-  try {
-    const url='https://raw.githubusercontent.com/khadrisaad/khadrisaad.github.io/3e15a3e3b05ebaff10a1beda4b2bfb45a171af0e/index.html?v=restore-20260925';
-    const r=await fetch(url,{cache:'no-store',mode:'cors'});
-    if(!r.ok) throw new Error('load failed');
-    const html=await r.text();
-    document.open(); document.write(html); document.close();
-  } catch(e) {
-    document.getElementById('loading').textContent='Refresh once to load Guidr.';
+/* Supabase project: `wishlist website-guidr`. Signups go through RPCs only; the table is RLS-locked. */
+const SUPA = 'https://ohrgavamspzzkzbopxrm.supabase.co';
+const KEY  = 'sb_publishable_jfESc0pJkst9R_UoWXhjLA_7i1lrLUd';
+
+/* Hide the counter until it reaches this. 0 = always show it. Raise to ~15 before posting the link. */
+const MIN_SHOW = 0;
+
+const H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+const $ = function(id){ return document.getElementById(id); };
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function say(kind, text){
+  const m = $('msg');
+  m.className = 'msg' + (kind ? ' ' + kind : '');
+  m.textContent = text;
+}
+
+const counter = $('counter'), countEl = $('count');
+let shown = 0;
+function roll(to){
+  const from = shown; shown = to;
+  if(to < MIN_SHOW){ counter.classList.remove('show'); return; }
+  counter.classList.add('show');
+  if(reduced || to === from){ countEl.textContent = to; return; }
+  const t0 = performance.now(), ms = Math.min(1100, 240 + Math.abs(to - from) * 22);
+  (function step(now){
+    const p = Math.min(1, (now - t0) / ms);
+    countEl.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+    if(p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+async function loadCount(){
+  try{
+    const r = await fetch(SUPA + '/rest/v1/rpc/waitlist_count', { headers:H });
+    if(r.ok){
+      const n = Number(await r.json());
+      if(Number.isFinite(n)) return roll(n);
+    }
+    console.warn('waitlist_count failed:', r.status);
+  }catch(err){ console.warn('waitlist_count failed:', err); }
+}
+loadCount();
+(function(){var f=$('fav'),l=$('logo');if(f&&l){var t=new Image();t.onerror=function(){f.href=l.src;};t.src=f.href;}})();
+
+async function join(email){
+  const params = new URLSearchParams(location.search);
+  const src = (params.get('src') || params.get('utm_source') || location.search.slice(1) || 'direct').toLowerCase();
+  let ref = '';
+  try{ ref = document.referrer ? new URL(document.referrer).hostname : ''; }catch(e){}
+  let tz = '';
+  try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }catch(e){}
+  const body = JSON.stringify({ p_email: email, p_source: src, p_referrer: ref, p_lang: navigator.language || '', p_tz: tz });
+  const call = function(){
+    return fetch(SUPA + '/rest/v1/rpc/join_waitlist', { method:'POST', headers:H, body:body });
+  };
+  function handle(res){
+    if(res && res.ok){
+      if(res.status === 'already'){
+        say('ok', "You're already on the list. We'll email you the day Guidr lands.");
+        if(Number.isFinite(res.total)) roll(res.total);
+      }else{
+        say('ok', "You're in" + (res.position ? " (#" + res.position + ")" : "") + ". We'll email you the day Guidr lands.");
+        roll(Number.isFinite(res.total) ? res.total : shown + 1);
+      }
+      return true;
+    }
+    const e = res && res.error;
+    if(e === 'invalid_email') say('err', 'That email looks off. Double-check it?');
+    else if(e === 'disposable') say('err', 'Please use a real inbox, not a throwaway one.');
+    else if(e === 'rate_limited') say('err', 'Too many tries from here. Give it a few minutes.');
+    else say('err', 'Something went wrong. Try again in a moment.');
+    return false;
   }
-})();
+  say('', 'Adding you…');
+  for(let attempt = 0; attempt < 2; attempt++){
+    try{
+      const r = await call();
+      if(r.ok) return handle(await r.json());
+      if(r.status === 404){
+        say('err', "Signup isn't wired up yet on our side. Back shortly.");
+        console.error('join_waitlist 404:', await r.text());
+        return false;
+      }
+      console.error('join_waitlist', r.status, await r.text());
+    }catch(err){ console.error(err); }
+  }
+  say('err', "Couldn't reach the server. Check your connection and try again.");
+  return false;
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+$('form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const input = $('email'), btn = $('btn');
+  const email = input.value.trim().toLowerCase();
+  if(!EMAIL_RE.test(email)){
+    say('err', 'Enter a valid email address.');
+    input.focus();
+    return;
+  }
+  btn.disabled = true;
+  join(email).then(function(ok){
+    btn.disabled = false;
+    if(ok) input.value = '';
+  }).catch(function(){
+    btn.disabled = false;
+  });
+});
 </script>
 </body>
 </html>
