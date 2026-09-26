@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en" class="no-gl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guidr · Join the waitlist</title>
+<meta name="description" content="Travel, finally in one place. Guidr is a new way to discover places, plan trips and share them with the people you trust. Join the waitlist and get a free 7-day trial when the app launches on iOS and Android.">
+<link rel="canonical" href="https://khadrisaad.github.io/waitlist/">
+<link rel="icon" type="image/png" href="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/icon.png">
+<link rel="apple-touch-icon" href="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/icon.png">
+<meta name="theme-color" content="#0B43B5">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Guidr">
+<meta property="og:url" content="https://khadrisaad.github.io/waitlist/">
+<meta property="og:title" content="Guidr · Travel, finally in one place">
+<meta property="og:description" content="Join the waitlist and get 7 days of Guidr free when the app launches on iOS and Android.">
+<meta property="og:image" content="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/og-v4.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="Guidr. Travel, finally in one place.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@guidrtravel">
+<meta name="twitter:image" content="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/og-v4.jpg">
+<link rel="preconnect" href="https://ohrgavamspzzkzbopxrm.supabase.co" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fff;
+  --w80:rgba(255,255,255,.84);
+  --w60:rgba(255,255,255,.64);
+  --brand:#FF6A00;
+  --brand-lite:#FF9A3D;
+  --navy:#061B3F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:#0B43B5}
+body{
+  color:var(--white);
+  font:400 16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  min-height:100svh;overflow-x:hidden;
+}
+
+/* ---------- backdrop ----------
+   One photo, pinned to the viewport, anchored to the bottom so the landmarks
+   always sit on the horizon. The sky above them is where everything lives. */
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0B43B5 linear-gradient(#0A3AA6,#1E78E6 70%,#3FA3F0)}
+.bg img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:50% 100%;display:block;
+  opacity:0;transition:opacity .8s ease;
+}
+.bg img.ready{opacity:1}
+/* no white wash: a whisper of shade at the very bottom so the footer reads on the water */
+.shade{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(to top, rgba(2,24,58,.42) 0%, rgba(2,24,58,0) 16%);
+}
+#glass{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
+html.gl #glass{display:block}
+
+.page{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 24px}
+
+/* ---------- nav ---------- */
+nav{width:100%;max-width:1120px;margin-top:22px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none}
+.brand img{width:38px;height:38px;border-radius:11px;display:block;box-shadow:0 6px 18px rgba(3,20,60,.35)}
+.brand span{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:28px;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(3,20,60,.25)}
+.x{width:42px;height:42px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:transform .2s}
+.x:hover{transform:translateY(-1px) scale(1.04)}
+.x svg{width:15px;height:15px;fill:currentColor}
+
+/* ---------- hero ---------- */
+.hero{
+  flex:1;width:100%;max-width:1120px;
+  display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;
+  padding:24px 0 calc(28vh + 24px);
+}
+@media (min-aspect-ratio: 16/10){ .hero{padding-bottom:calc(30vw * .42 + 10px)} }
+.copy{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 14px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff}
+.led{width:7px;height:7px;border-radius:50%;background:var(--brand-lite);box-shadow:0 0 0 3px rgba(255,154,61,.28);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55;box-shadow:0 0 0 6px rgba(255,154,61,.05)}}
+h1{
+  margin-top:22px;font-family:'Instrument Serif',Georgia,serif;font-weight:400;
+  font-size:clamp(46px,6.4vw,84px);line-height:.98;letter-spacing:-.022em;
+  text-shadow:0 4px 30px rgba(3,24,70,.28);
+}
+h1 em{
+  font-style:italic;white-space:nowrap;padding-right:.06em;
+  background:linear-gradient(95deg,#FFC37A 0%,#FF8A2A 55%,#FF6A00 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 18px rgba(255,120,30,.25));
+}
+.lede{margin-top:18px;max-width:480px;font-size:clamp(16px,1.35vw,18px);line-height:1.6;color:var(--w80);text-shadow:0 1px 12px rgba(3,24,70,.3)}
+.meta{margin-top:26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.counter{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 10px;border-radius:999px;font-size:14px;color:#fff;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
+.counter.show{opacity:1;transform:none}
+.counter:not(.show){position:absolute;visibility:hidden}
+.faces{display:flex}
+.faces i{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.9);margin-left:-7px;display:block}
+.faces i:first-child{margin-left:0;background:linear-gradient(135deg,#FFB36B,#FF6A00)}
+.faces i:nth-child(2){background:linear-gradient(135deg,#8FD3FF,#2F7BEA)}
+.faces i:nth-child(3){background:linear-gradient(135deg,#9BF0C8,#1FA67A)}
+.counter b{font-weight:700;font-variant-numeric:tabular-nums}
+.stores{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:600;color:#fff;text-shadow:0 1px 10px rgba(3,24,70,.3)}
+.stores .lbl{font-weight:500;color:var(--w60);letter-spacing:.02em}
+.store{display:inline-flex;align-items:center;gap:7px}
+.store svg{width:17px;height:17px;fill:#fff}
+
+/* ---------- card ---------- */
+.card{position:relative;width:100%;max-width:448px;justify-self:end;padding:30px 30px 24px;border-radius:32px}
+.card h2{font-family:'Instrument Serif',Georgia,serif;font-weight:400;font-size:34px;line-height:1.05;letter-spacing:-.015em}
+.card .csub{margin-top:8px;font-size:14.5px;color:var(--w80)}
+.offer{
+  margin-top:20px;display:flex;gap:14px;align-items:center;text-align:left;
+  padding:14px 16px;border-radius:20px;
+  background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.07));
+  border:1px solid rgba(255,255,255,.3);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 24px -14px rgba(3,20,60,.5);
+}
+.offer b em{font-style:normal;color:#FFC98F}
+.offer .ico{flex:none;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#FFB064,#FF6A00);box-shadow:0 6px 16px rgba(255,106,0,.45),inset 0 1px 0 rgba(255,255,255,.45)}
+.offer .ico svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.offer b{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.offer span{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--w80)}
+.form{margin-top:18px;display:flex;gap:10px}
+.form input{
+  flex:1;min-width:0;height:54px;padding:0 20px;border-radius:999px;border:0;outline:none;
+  background:transparent;color:#fff;font:inherit;font-size:15.5px;
+  transition:box-shadow .2s;
+}
+.form input::placeholder{color:rgba(255,255,255,.62)}
+.form input:focus{box-shadow:0 0 0 3px rgba(255,170,100,.75)}
+.form button{
+  flex:none;height:54px;padding:0 26px;border-radius:999px;border:0;cursor:pointer;
+  background:transparent;color:#fff;font:inherit;font-size:15.5px;font-weight:600;letter-spacing:-.01em;
+  text-shadow:0 1px 2px rgba(120,40,0,.35);
+  transition:transform .18s;
+}
+.form button:hover{transform:translateY(-1px)}
+.form button:active{transform:translateY(1px)}
+.form button:disabled{opacity:.7;cursor:default;transform:none}
+.fine{margin-top:12px;font-size:12.5px;color:var(--w60);text-align:center}
+.msg{min-height:0;font-size:14px;font-weight:600;text-align:center;transition:.2s}
+.msg:not(:empty){margin-top:12px;min-height:21px}
+.msg.ok{color:#fff}
+.msg.ok::before{content:"✓ ";color:#9BF0C8}
+.msg.err{color:#FFD2C4}
+
+footer{position:absolute;left:0;right:0;bottom:0;width:100%;text-align:center;padding:18px 0 max(16px,env(safe-area-inset-bottom));font-size:13px;color:rgba(255,255,255,.78);text-shadow:0 1px 8px rgba(2,24,58,.5)}
+footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
+
+/* ---------- glass, CSS fallback (no WebGL) ---------- */
+html.no-gl [data-glass]{
+  background:linear-gradient(150deg,rgba(255,255,255,.26),rgba(255,255,255,.08));
+  -webkit-backdrop-filter:blur(22px) saturate(1.7);backdrop-filter:blur(22px) saturate(1.7);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.22),0 18px 40px -16px rgba(3,20,60,.45);
+}
+html.no-gl [data-glass="inset"]{background:rgba(6,27,63,.28);box-shadow:inset 0 2px 6px rgba(3,20,60,.35),inset 0 0 0 1px rgba(255,255,255,.22)}
+html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 10px 24px -8px rgba(255,106,0,.6)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html.no-gl [data-glass]{background:rgba(20,70,160,.72)}
+}
+
+/* ---------- motion ---------- */
+.up{opacity:0;animation:up .9s cubic-bezier(.2,.7,.25,1) forwards}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}.d5{animation-delay:.36s}.d6{animation-delay:.46s}
+
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr;gap:30px;padding:34px 0 36vh;justify-items:center}
+  .copy{align-items:center;text-align:center}
+  .lede{max-width:520px}
+  .meta{justify-content:center}
+  .card{justify-self:center}
+}
+@media (max-width:480px){
+  nav{margin-top:16px}
+  .hero{padding-top:26px;gap:26px;padding-bottom:30vh}
+  h1{font-size:clamp(42px,12.5vw,54px)}
+  .card{padding:24px 18px 20px;border-radius:28px}
+  .card h2{font-size:30px}
+  .form{flex-direction:column}
+  .form input,.form button{width:100%;flex:none}
+  .meta{flex-direction:column;gap:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .up{opacity:1}
+}
+</style>
+</head>
+<body>
+<div class="bg"><img id="bgimg" alt="" crossorigin="anonymous" decoding="async" fetchpriority="high"
+  src="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg"
+  srcset="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4-m.jpg 1915w, https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg 3830w"
+  sizes="(max-aspect-ratio: 1643/1000) 165vh, 100vw"></div>
+<div class="shade"></div>
+<canvas id="glass" aria-hidden="true"></canvas>
+
+<div class="page">
+  <nav class="up d1">
+    <a class="brand" href="./" aria-label="Guidr home">
+      <img src="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/icon.png" alt="" width="38" height="38">
+      <span>Guidr</span>
+    </a>
+    <a class="x" data-glass="pill" data-blur="6" href="https://x.com/guidrtravel" target="_blank" rel="noopener" aria-label="Guidr on X">
+      <svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.2L24 22.8h-7.4l-5.8-7.6-6.7 7.6H.4l8.6-9.9L0 1.2h7.6l5.2 6.9zm-1.3 19.4h2L6.5 3.3H4.3z"/></svg>
+    </a>
+  </nav>
+
+  <main class="hero">
+    <section class="copy">
+      <span class="pill up d2" data-glass="pill" data-blur="6"><span class="led"></span>Waitlist now open</span>
+      <h1 class="up d3">Travel, finally <em>in one place.</em></h1>
+      <p class="lede up d4">Guidr is a new way to discover places, plan trips and share them with the people you trust. Be first in line.</p>
+      <div class="meta up d5">
+        <div class="counter" id="counter" data-glass="pill" data-blur="6">
+          <span class="faces" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span><b id="count">0</b> <span id="countLabel">travelers already in</span></span>
+        </div>
+        <div class="stores">
+          <span class="lbl">Coming to</span>
+          <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.5c.03-2.6 2.12-3.85 2.21-3.91-1.2-1.77-3.08-2.01-3.75-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.790-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.27 3.13-2.53.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.6c.71-.87 1.19-2.07 1.06-3.27-1.02.04-2.27.68-3.01 1.54-.66.76-1.24 1.99-1.09 3.16 1.14.09 2.31-.58 3.04-1.43"/></svg>App Store</span>
+          <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-1.078-.171zm0 2.067l-11.16 11.095c.353.076.729.031 1.066-.16l13.297-7.541z"/></svg>Google Play</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card up d4" data-glass="card" data-blur="16" aria-labelledby="joinTitle">
+      <h2 id="joinTitle">Join the waitlist</h2>
+      <p class="csub">Be first in line when Guidr launches.</p>
+
+      <div class="offer">
+        <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v7.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V12M12 8v12.5M12 8S10.6 3.5 8 3.5a2.2 2.2 0 0 0 0 4.5h4Zm0 0s1.4-4.5 4-4.5a2.2 2.2 0 0 1 0 4.5h-4Z"/></svg></span>
+        <span><b>Sign up now, get <em>7 days free</em></b><span>Everyone on the waitlist gets a free 7-day Guidr trial the day the app drops.</span></span>
+      </div>
+
+      <form class="form" id="form" novalidate>
+        <input type="email" id="email" data-glass="inset" data-blur="10" placeholder="you@email.com" autocomplete="email" inputmode="email" aria-label="Email address" required>
+        <button type="submit" id="btn" data-glass="tint" data-blur="8">Join waitlist</button>
+      </form>
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      <p class="fine">One email when we launch. No spam, ever.</p>
+    </section>
+  </main>
+
+  <footer>© 2026 Guidr · <a href="https://x.com/guidrtravel" target="_blank" rel="noopener">@guidrtravel</a></footer>
+</div>
+
+<script>
+/* ======================================================================
+   Liquid glass, rendered with WebGL2.
+   Every [data-glass] element becomes a slab of glass: the photo behind it is
+   blurred, bent at the rim (refraction), split into a faint rainbow at the very
+   edge (dispersion), and lit by a specular rim that leans toward the pointer.
+   Soft contact shadows are drawn in the same pass. If WebGL2 or the image isn't
+   available, the page quietly keeps its CSS frosted-glass fallback.
+   ====================================================================== */
+(function(){
+  const canvas = document.getElementById('glass');
+  const img = document.getElementById('bgimg');
+  const root = document.documentElement;
+  img.addEventListener('load', function(){ img.classList.add('ready'); }, { once:true });
+  if (img.complete && img.naturalWidth) img.classList.add('ready');
+
+  const gl = canvas.getContext('webgl2', { premultipliedAlpha:true, alpha:true, antialias:false });
+  if (!gl) return;
+
+  const VS = `#version 300 es
+  in vec2 a; void main(){ gl_Position = vec4(a,0.,1.); }`;
+
+  const FS = `#version 300 es
+  precision highp float;
+  uniform sampler2D uTex;
+  uniform vec2 uRes; uniform float uDpr;
+  uniform vec4 uImg; uniform vec2 uTexSize;
+  uniform int uN;
+  uniform vec4 uRect[10];
+  uniform vec4 uP[10];      // radius, kind, blur, opacity
+  uniform vec2 uLight; uniform float uHasLight;
+  out vec4 o;
+
+  float sdRR(vec2 p, vec2 c, vec2 b, float r){
+    vec2 q = abs(p - c) - b + r;
+    return length(max(q, 0.)) + min(max(q.x, q.y), 0.) - r;
+  }
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
+  vec3 samp(vec2 p, float lod){
+    vec2 uv = clamp((p - uImg.xy) / uImg.zw, vec2(0.0005), vec2(0.9995));
+    return textureLod(uTex, uv, lod).rgb;
+  }
+  vec3 blurAt(vec2 p, float R){
+    float tpc = uTexSize.x / uImg.z;
+    float lod = max(log2(max(R * tpc, 1.) / 2.2), 0.);
+    vec3 acc = samp(p, lod) * .6; float ws = .6;
+    for (int i = 0; i < 18; i++){
+      float fi = float(i) + .5;
+      float rr = sqrt(fi / 18.) * R;
+      float an = fi * 2.39996;
+      float w = exp(-2.2 * (rr * rr) / (R * R + 1e-3));
+      acc += samp(p + vec2(cos(an), sin(an)) * rr, lod) * w; ws += w;
+    }
+    return acc / ws;
+  }
+
+  void main(){
+    vec2 p = vec2(gl_FragCoord.x, uRes.y * uDpr - gl_FragCoord.y) / uDpr;
+    vec4 acc = vec4(0.);
+    for (int i = 0; i < 10; i++){
+      if (i >= uN) break;
+      vec4 R = uRect[i]; vec4 P = uP[i];
+      vec2 b = R.zw * .5; vec2 c = R.xy + b;
+      float r = min(P.x, min(b.x, b.y));
+      float kind = P.y;              // 0 card, 1 pill, 2 inset, 3 tint
+      float op = P.w;
+      bool inset = kind > 1.5 && kind < 2.5;
+
+      // soft contact shadow (two layers: tight + ambient)
+      if (!inset){
+        float big = kind < .5 ? 1. : .55;
+        float d1 = sdRR(p, c + vec2(0., 14. * big), b, r);
+        float d2 = sdRR(p, c + vec2(0., 3.), b, r);
+        float s = .20 * big * (1. - smoothstep(-24. * big, 46. * big, d1))
+                + .10 * (1. - smoothstep(-3., 7., d2));
+        s *= op;
+        acc = vec4(vec3(.01, .05, .16) * s, s) + acc * (1. - s);
+      }
+
+      float d = sdRR(p, c, b, r);
+      if (d < 1.){
+        float aa = clamp(.5 - d * uDpr, 0., 1.) * op;
+        float t = -d;
+        float B = clamp(r * .95, 6., 30.);              // bevel width
+        float e = .6;
+        vec2 n = normalize(vec2(
+          sdRR(p + vec2(e, 0.), c, b, r) - sdRR(p - vec2(e, 0.), c, b, r),
+          sdRR(p + vec2(0., e), c, b, r) - sdRR(p - vec2(0., e), c, b, r)) + 1e-6);
+        float x = clamp(1. - t / B, 0., 1.);             // 1 at rim -> 0 past the bevel
+        float bend = pow(x, 2.4);
+        float disp = B * (inset ? -.55 : 1.05) * bend;  // refraction offset in px
+        float blur = P.z * (1. + .6 * bend);
+        vec3 col;
+        if (bend > .003){
+          float ca = .22 * bend;                          // dispersion strength
+          col.r = blurAt(p - n * disp * (1. + ca), blur).r;
+          col.g = blurAt(p - n * disp, blur).g;
+          col.b = blurAt(p - n * disp * (1. - ca), blur).b;
+        } else {
+          col = blurAt(p, blur);
+        }
+
+        // light direction: top-left by default, leaning toward the pointer
+        vec2 L = normalize(vec2(-.55, -.84));
+        if (uHasLight > .5){ vec2 dl = uLight - c; if (length(dl) > 1.) L = normalize(mix(L, normalize(dl), .45)); }
+        float ndl = dot(n, L);
+        if (inset) ndl = -ndl;
+
+        float lum = dot(col, vec3(.299, .587, .114));
+        vec3 grey = vec3(lum);
+        col = mix(grey, col, 1.18);                      // a touch more saturated, like real glass
+        if (kind < .5){
+          col = mix(col, vec3(.72, .84, 1.), .10);        // cool clear tint
+          col *= 1. - .30 * smoothstep(.5, .92, lum);     // keep white text readable over clouds
+        } else if (kind < 1.5){
+          col = mix(col, vec3(.8, .9, 1.), .14);
+          col *= 1. - .22 * smoothstep(.55, .95, lum);
+        } else if (inset){
+          col = mix(col, vec3(.02, .09, .24), .34);
+        } else {
+          vec3 o1 = vec3(1., .63, .27), o2 = vec3(1., .40, .02);
+          float yN = clamp((p.y - R.y) / R.w, 0., 1.);
+          col = mix(col, mix(o1, o2, yN), .92);
+        }
+
+        // thickness: lit bevel + shaded far side
+        col += vec3(1.) * .20 * pow(x, 2.6) * max(ndl, 0.);
+        col -= vec3(.06, .09, .14) * .7 * pow(x, 3.) * max(-ndl, 0.);
+        // specular rim, bright on the lit side, a softer kiss on the opposite corner
+        float rim = smoothstep(1.7, .15, t);
+        float rimI = .28 + .72 * pow(max(ndl, 0.), 1.4) + .45 * pow(max(-ndl, 0.), 2.2);
+        col = mix(col, vec3(1.), clamp(rim * rimI, 0., 1.) * (inset ? .45 : .9));
+        // inner reflection line just inside the rim
+        col += .05 * smoothstep(1.2, 0., abs(t - 3.2)) * max(ndl, 0.);
+        // broad sheen across the top
+        float yN2 = (p.y - R.y) / max(R.w, 1.);
+        if (!inset) col += .045 * (1. - smoothstep(0., .5, yN2));
+        col += (hash(floor(p * uDpr)) - .5) * .014;
+
+        vec4 src = vec4(clamp(col, 0., 1.) * aa, aa);
+        acc = src + acc * (1. - src.a);
+      }
+    }
+    o = acc;
+  }`;
+
+  function sh(type, src){
+    const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  let prog;
+  try{
+    prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+  }catch(err){ console.warn('glass shader:', err); return; }
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'a');
+  gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+  const U = {};
+  ['uTex','uRes','uDpr','uImg','uTexSize','uN','uRect','uP','uLight','uHasLight'].forEach(function(k){ U[k] = gl.getUniformLocation(prog, k); });
+
+  const KIND = { card:0, pill:1, inset:2, tint:3 };
+  const els = Array.prototype.slice.call(document.querySelectorAll('[data-glass]'))
+    .sort(function(a, b){ return (KIND[a.dataset.glass] === 0 ? -1 : 0) - (KIND[b.dataset.glass] === 0 ? -1 : 0); })
+    .slice(0, 10);
+
+  let tex = null, texW = 0, texH = 0;
+  function upload(){
+    try{
+      const max = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+      let source = img, w = img.naturalWidth, h = img.naturalHeight;
+      if (Math.max(w, h) > max){
+        const s = max / Math.max(w, h), c = document.createElement('canvas');
+        c.width = Math.floor(w * s); c.height = Math.floor(h * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        source = c; w = c.width; h = c.height;
+      }
+      tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      if (gl.getError() !== gl.NO_ERROR) throw new Error('texture upload failed');
+      texW = w; texH = h;
+      return true;
+    }catch(err){ console.warn('glass texture:', err); return false; }
+  }
+
+  let pointer = null, lastKey = '';
+  addEventListener('pointermove', function(e){ if (e.pointerType === 'mouse') pointer = [e.clientX, e.clientY]; }, { passive:true });
+  addEventListener('pointerleave', function(){ pointer = null; });
+
+  function effOpacity(el){
+    let o = 1;
+    for (let n = el; n && n !== document.body; n = n.parentElement){
+      const v = parseFloat(getComputedStyle(n).opacity);
+      if (!isNaN(v)) o *= v;
+      if (o < .002) return 0;
+    }
+    return o;
+  }
+
+  const rects = new Float32Array(40), params = new Float32Array(40);
+  function frame(){
+    requestAnimationFrame(frame);
+    if (!tex) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const vw = innerWidth, vh = innerHeight;
+    const cw = Math.round(vw * dpr), ch = Math.round(vh * dpr);
+    if (canvas.width !== cw || canvas.height !== ch){ canvas.width = cw; canvas.height = ch; lastKey = ''; }
+
+    // where the photo actually sits (object-fit: cover, anchored bottom-center)
+    const box = img.getBoundingClientRect();
+    const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
+    const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
+    const ix = box.left + (box.width - iw) / 2, iy = box.top + (box.height - ih);
+
+    let n = 0, key = cw + ',' + ch + ',' + ix.toFixed(1) + ',' + iy.toFixed(1) + ',' + iw.toFixed(1);
+    for (let i = 0; i < els.length; i++){
+      const el = els[i], r = el.getBoundingClientRect();
+      if (r.width < 2 || r.bottom < -60 || r.top > vh + 60) continue;
+      const op = effOpacity(el);
+      if (op <= 0) continue;
+      const cs = getComputedStyle(el);
+      rects.set([r.left, r.top, r.width, r.height], n * 4);
+      params.set([parseFloat(cs.borderTopLeftRadius) || 0, KIND[el.dataset.glass] || 0, parseFloat(el.dataset.blur) || 10, op], n * 4);
+      key += '|' + r.left.toFixed(1) + ',' + r.top.toFixed(1) + ',' + r.width.toFixed(1) + ',' + r.height.toFixed(1) + ',' + op.toFixed(3);
+      n++;
+    }
+    if (pointer) key += '|p' + pointer[0] + ',' + pointer[1];
+    if (key === lastKey) return;
+    lastKey = key;
+
+    gl.viewport(0, 0, cw, ch);
+    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1i(U.uTex, 0);
+    gl.uniform2f(U.uRes, vw, vh);
+    gl.uniform1f(U.uDpr, dpr);
+    gl.uniform4f(U.uImg, ix, iy, iw, ih);
+    gl.uniform2f(U.uTexSize, texW, texH);
+    gl.uniform1i(U.uN, n);
+    gl.uniform4fv(U.uRect, rects);
+    gl.uniform4fv(U.uP, params);
+    gl.uniform2f(U.uLight, pointer ? pointer[0] : 0, pointer ? pointer[1] : 0);
+    gl.uniform1f(U.uHasLight, pointer ? 1 : 0);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+
+  canvas.addEventListener('webglcontextlost', function(e){ e.preventDefault(); root.classList.remove('gl'); root.classList.add('no-gl'); tex = null; });
+
+  function start(){
+    if (!upload()) return;
+    root.classList.remove('no-gl'); root.classList.add('gl');
+    requestAnimationFrame(frame);
+  }
+  if (img.complete && img.naturalWidth) start();
+  else img.addEventListener('load', start, { once:true });
+})();
+</script>
+
+<script>
+/* ======================================================================
+   Waitlist. Supabase project `wishlist website-guidr` (separate from the app).
+   The table is RLS-locked; the page only calls two RPCs:
+     join_waitlist(p_email, p_source, p_referrer, p_lang, p_tz) -> jsonb
+     waitlist_count() -> int
+   Server side handles validation, duplicates, throwaway inboxes and rate limits.
+   ====================================================================== */
+const SUPA = 'https://ohrgavamspzzkzbopxrm.supabase.co';
+const KEY  = 'sb_publishable_jfESc0pJkst9R_UoWXhjLA_7i1lrLUd';
+/* Hide the counter until it reaches this. 0 = always show. Raise to ~15 before sharing the link. */
+const MIN_SHOW = 0;
+
+const H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+const $ = function(id){ return document.getElementById(id); };
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function say(kind, text){ const m = $('msg'); m.className = 'msg' + (kind ? ' ' + kind : ''); m.textContent = text; }
+
+const counter = $('counter'), countEl = $('count'), labelEl = $('countLabel');
+let shown = 0;
+function label(n){ labelEl.textContent = n === 1 ? 'traveler already in' : 'travelers already in'; }
+function roll(to){
+  const from = shown; shown = to; label(to);
+  if (to < MIN_SHOW){ counter.classList.remove('show'); return; }
+  counter.classList.add('show');
+  if (reduced || to === from){ countEl.textContent = to; return; }
+  const t0 = performance.now(), ms = Math.min(1100, 260 + Math.abs(to - from) * 22);
+  (function step(now){
+    const p = Math.min(1, (now - t0) / ms);
+    countEl.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
+}
+async function loadCount(){
+  try{
+    const r = await fetch(SUPA + '/rest/v1/rpc/waitlist_count', { method:'POST', headers:H, body:'{}' });
+    if (r.ok){ const n = Number(await r.json()); if (Number.isFinite(n)) return roll(n); }
+    console.warn('waitlist_count failed:', r.status);
+  }catch(err){ console.warn('waitlist_count failed:', err); }
+}
+loadCount();
+
+async function join(email){
+  const params = new URLSearchParams(location.search);
+  const src = (params.get('src') || params.get('utm_source') || location.search.slice(1) || 'direct').toLowerCase();
+  let ref = ''; try{ ref = document.referrer ? new URL(document.referrer).hostname : ''; }catch(e){}
+  let tz = ''; try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }catch(e){}
+  const body = JSON.stringify({ p_email: email, p_source: src, p_referrer: ref, p_lang: navigator.language || '', p_tz: tz });
+  function handle(res){
+    if (res && res.ok){
+      if (res.status === 'already'){
+        say('ok', "You're already on the list. Your free week is saved for launch day.");
+        if (Number.isFinite(res.total)) roll(res.total);
+      } else {
+        say('ok', "You're in" + (res.position ? " at #" + res.position : "") + ". Your 7-day trial is saved for launch day.");
+        roll(Number.isFinite(res.total) ? res.total : shown + 1);
+      }
+      return true;
+    }
+    const e = res && res.error;
+    if (e === 'invalid_email') say('err', 'That email looks off. Double-check it?');
+    else if (e === 'disposable') say('err', 'Please use a real inbox, not a throwaway one.');
+    else if (e === 'rate_limited') say('err', 'Too many tries from here. Give it a few minutes.');
+    else say('err', 'Something went wrong. Try again in a moment.');
+    return false;
+  }
+  say('', 'Adding you…');
+  for (let attempt = 0; attempt < 2; attempt++){
+    try{
+      const r = await fetch(SUPA + '/rest/v1/rpc/join_waitlist', { method:'POST', headers:H, body:body });
+      if (r.ok) return handle(await r.json());
+      if (r.status === 404){ say('err', "Signup isn't wired up yet on our side. Back shortly."); return false; }
+      console.error('join_waitlist', r.status, await r.text());
+    }catch(err){ console.error(err); }
+  }
+  say('err', "Couldn't reach the server. Check your connection and try again.");
+  return false;
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+$('form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const input = $('email'), btn = $('btn');
+  const email = input.value.trim().toLowerCase();
+  if (!EMAIL_RE.test(email)){ say('err', 'Enter a valid email address.'); input.focus(); return; }
+  btn.disabled = true;
+  join(email).then(function(ok){ btn.disabled = false; if (ok) input.value = ''; })
+             .catch(function(){ btn.disabled = false; });
+});
+</script>
+</body>
+</html>
