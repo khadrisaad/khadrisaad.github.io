@@ -33,55 +33,68 @@
   --brand:#FF6A00;
   --brand-lite:#FF9A3D;
   --navy:#061B3F;
+  --sky:#0B43B5;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%;background:#0B43B5}
+/* overscroll-behavior:none stops the rubber-band bounce that made the page wobble on swipe */
+html{-webkit-text-size-adjust:100%;background:var(--sky);overscroll-behavior:none}
 body{
   color:var(--white);
   font:400 16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-  min-height:100svh;overflow-x:hidden;
+  overflow-x:hidden;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;
 }
 
-/* ---------- backdrop ----------
-   One photo, pinned to the viewport, anchored to the bottom so the landmarks
-   always sit on the horizon. The sky above them is where everything lives. */
-.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0B43B5 linear-gradient(#0A3AA6,#1E78E6 70%,#3FA3F0)}
+/* ---------- stage ----------
+   Everything (photo, glass canvas, content) lives in ONE scrolling block, so
+   nothing can drift against anything else while you scroll. The photo sits at
+   the bottom of the stage and is exactly one screen tall (svh = the small,
+   stable viewport height, so it doesn't jump when the phone's address bar
+   hides). Above it the stage is the same deep blue as the top of the sky. */
+.stage{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:var(--sky)}
+.bg{
+  position:absolute;left:0;right:0;bottom:0;height:100vh;height:100svh;z-index:0;overflow:hidden;
+  background:linear-gradient(var(--sky),#1E78E6 70%,#3FA3F0);
+}
 .bg img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;object-position:50% 100%;display:block;
   opacity:0;transition:opacity .8s ease;
 }
 .bg img.ready{opacity:1}
-/* no white wash: a whisper of shade at the very bottom so the footer reads on the water */
+/* a whisper of shade at the very bottom so the footer reads on the water */
 .shade{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
+  position:absolute;inset:0;z-index:0;pointer-events:none;
   background:linear-gradient(to top, rgba(2,24,58,.42) 0%, rgba(2,24,58,0) 16%);
 }
-#glass{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
+#glass{position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
 html.gl #glass{display:block}
 
-.page{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 24px}
+.page{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 24px}
 
 /* ---------- nav ---------- */
 nav{width:100%;max-width:1120px;margin-top:22px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:11px;color:#fff;text-decoration:none}
 .brand img{width:38px;height:38px;border-radius:11px;display:block;box-shadow:0 6px 18px rgba(3,20,60,.35)}
 .brand span{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:28px;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(3,20,60,.25)}
-.x{width:42px;height:42px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:transform .2s}
-.x:hover{transform:translateY(-1px) scale(1.04)}
-.x svg{width:15px;height:15px;fill:currentColor}
+.x{flex:none;width:42px;height:42px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;transition:transform .2s}
+.x:hover{transform:translateY(-1px)}
+.x svg{width:15px;height:15px;fill:currentColor;display:block}
 
-/* ---------- hero: everything in one centered column ---------- */
+/* ---------- hero: one centered column ----------
+   Bottom padding keeps the card above the landmarks: they fill roughly the
+   bottom 30% of the photo, and the photo is max(1 screen tall, width / 1.643). */
 .hero{
   flex:1;width:100%;max-width:1120px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  padding:20px 0 calc(12vh + 48px);
+  padding:20px 0 calc(max(24vh, 15vw) + 40px);
+  padding:20px 0 calc(max(24svh, 15vw) + 40px);
 }
 .copy{display:flex;flex-direction:column;align-items:center;text-align:center}
 .pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 14px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:#fff}
-.led{width:7px;height:7px;border-radius:50%;background:var(--brand-lite);box-shadow:0 0 0 3px rgba(255,154,61,.28);animation:pulse 2.6s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.55;box-shadow:0 0 0 6px rgba(255,154,61,.05)}}
+/* the dot stays solid orange; only its halo pulses (fading the dot itself made it look grey on the blue glass) */
+.led{flex:none;width:7px;height:7px;border-radius:50%;background:#FF8A2A;box-shadow:0 0 0 3px rgba(255,154,61,.3);animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(255,154,61,.06)}}
 h1{
   margin-top:20px;font-family:'Instrument Serif',Georgia,serif;font-weight:400;
   font-size:clamp(46px,5.6vw,80px);line-height:.98;letter-spacing:-.022em;
@@ -94,20 +107,6 @@ h1 em{
   filter:drop-shadow(0 3px 18px rgba(255,120,30,.25));
 }
 .lede{margin-top:16px;max-width:560px;font-size:clamp(16px,1.35vw,18px);line-height:1.6;color:var(--w80);text-shadow:0 1px 12px rgba(3,24,70,.3)}
-.meta{margin-top:22px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
-.counter{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 10px;border-radius:999px;font-size:14px;color:#fff;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
-.counter.show{opacity:1;transform:none}
-.counter:not(.show){position:absolute;visibility:hidden}
-.faces{display:flex}
-.faces i{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.9);margin-left:-7px;display:block}
-.faces i:first-child{margin-left:0;background:linear-gradient(135deg,#FFB36B,#FF6A00)}
-.faces i:nth-child(2){background:linear-gradient(135deg,#8FD3FF,#2F7BEA)}
-.faces i:nth-child(3){background:linear-gradient(135deg,#9BF0C8,#1FA67A)}
-.counter b{font-weight:700;font-variant-numeric:tabular-nums}
-.stores{display:flex;align-items:center;gap:16px;font-size:14px;font-weight:600;color:#fff;text-shadow:0 1px 10px rgba(3,24,70,.3)}
-.stores .lbl{font-weight:500;color:var(--w60);letter-spacing:.02em}
-.store{display:inline-flex;align-items:center;gap:7px}
-.store svg{width:17px;height:17px;fill:#fff}
 
 /* ---------- card (centered) ---------- */
 .card{position:relative;width:100%;max-width:480px;margin:28px auto 0;padding:30px 30px 24px;border-radius:32px;text-align:center}
@@ -127,18 +126,22 @@ h1 em{
 .offer span{display:block;margin-top:2px;font-size:13.5px;line-height:1.45;color:var(--w80)}
 .form{margin-top:18px;display:flex;gap:10px}
 .form input{
-  flex:1;min-width:0;height:54px;padding:0 20px;border-radius:999px;border:0;outline:none;
+  flex:1;min-width:0;height:54px;padding:0 20px;border-radius:27px;border:0;outline:none;
   background:transparent;color:#fff;font:inherit;font-size:15.5px;
+  -webkit-appearance:none;appearance:none;
   transition:box-shadow .2s;
 }
 .form input::placeholder{color:rgba(255,255,255,.62)}
-.form input:focus{box-shadow:0 0 0 3px rgba(255,170,100,.75)}
+/* focus ring drawn INSIDE the field's edge, so it hugs the glass exactly instead of floating around it */
+.form input:focus{box-shadow:inset 0 0 0 2px rgba(255,178,110,.95)}
 .form button{
-  flex:none;height:54px;padding:0 26px;border-radius:999px;border:0;cursor:pointer;
+  flex:none;height:54px;padding:0 26px;border-radius:27px;border:0;cursor:pointer;
   background:transparent;color:#fff;font:inherit;font-size:15.5px;font-weight:600;letter-spacing:-.01em;
   text-shadow:0 1px 2px rgba(120,40,0,.35);
+  -webkit-appearance:none;appearance:none;outline:none;
   transition:transform .18s;
 }
+.form button:focus-visible{box-shadow:inset 0 0 0 2px rgba(255,255,255,.9)}
 .form button:hover{transform:translateY(-1px)}
 .form button:active{transform:translateY(1px)}
 .form button:disabled{opacity:.7;cursor:default;transform:none}
@@ -148,6 +151,17 @@ h1 em{
 .msg.ok{color:#fff}
 .msg.ok::before{content:"✓ ";color:#9BF0C8}
 .msg.err{color:#FFD2C4}
+
+/* ---------- counter + stores, centered under the card ---------- */
+.meta{margin-top:22px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.counter{display:inline-flex;align-items:center;justify-content:center;height:40px;padding:0 20px;border-radius:20px;font-size:14px;line-height:1;color:#fff;white-space:nowrap;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s}
+.counter.show{opacity:1;transform:none}
+.counter:not(.show){display:none}
+.counter b{font-weight:700;font-variant-numeric:tabular-nums;margin-right:.3em}
+.stores{display:flex;align-items:center;justify-content:center;gap:16px;font-size:14px;line-height:1;font-weight:600;color:#fff;text-shadow:0 1px 10px rgba(3,24,70,.3)}
+.stores .lbl{font-weight:500;color:var(--w60);letter-spacing:.02em}
+.store{display:inline-flex;align-items:center;gap:7px}
+.store svg{flex:none;width:17px;height:17px;fill:#fff;display:block}
 
 footer{position:absolute;left:0;right:0;bottom:0;width:100%;text-align:center;padding:18px 0 max(16px,env(safe-area-inset-bottom));font-size:13px;color:rgba(255,255,255,.78);text-shadow:0 1px 8px rgba(2,24,58,.5)}
 footer a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35)}
@@ -159,6 +173,7 @@ html.no-gl [data-glass]{
   box-shadow:inset 0 1px 0 rgba(255,255,255,.6),inset 0 -1px 0 rgba(255,255,255,.15),inset 0 0 0 1px rgba(255,255,255,.22),0 18px 40px -16px rgba(3,20,60,.45);
 }
 html.no-gl [data-glass="inset"]{background:rgba(6,27,63,.28);box-shadow:inset 0 2px 6px rgba(3,20,60,.35),inset 0 0 0 1px rgba(255,255,255,.22)}
+html.no-gl [data-glass="inset"]:focus{box-shadow:inset 0 2px 6px rgba(3,20,60,.35),inset 0 0 0 2px rgba(255,178,110,.95)}
 html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 10px 24px -8px rgba(255,106,0,.6)}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   html.no-gl [data-glass]{background:rgba(20,70,160,.72)}
@@ -170,18 +185,17 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
 .d1{animation-delay:.05s}.d2{animation-delay:.12s}.d3{animation-delay:.2s}.d4{animation-delay:.28s}.d5{animation-delay:.36s}.d6{animation-delay:.46s}
 
 @media (max-width:960px){
-  .hero{padding:34px 0 30vh}
+  .hero{padding-top:34px}
   .lede{max-width:520px}
 }
 @media (max-width:480px){
   nav{margin-top:16px}
-  .hero{padding-top:26px;padding-bottom:28vh}
+  .hero{padding-top:26px}
   h1{font-size:clamp(42px,12.5vw,54px)}
   .card{padding:24px 18px 20px;border-radius:28px}
   .card h2{font-size:30px}
   .form{flex-direction:column}
   .form input,.form button{width:100%;flex:none}
-  .meta{flex-direction:column;gap:14px}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -190,6 +204,7 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
 </style>
 </head>
 <body>
+<div class="stage" id="stage">
 <div class="bg"><img id="bgimg" alt="" crossorigin="anonymous" decoding="async" fetchpriority="high"
   src="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg"
   srcset="https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4-m.jpg 1915w, https://ohrgavamspzzkzbopxrm.supabase.co/storage/v1/object/public/site/bg-v4.jpg 3830w"
@@ -234,18 +249,18 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
 
     <div class="meta up d6">
       <div class="counter" id="counter" data-glass="pill" data-blur="6">
-        <span class="faces" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span><b id="count">0</b> <span id="countLabel">travelers already in</span></span>
+        <b id="count">0</b><span id="countLabel">travelers already in</span>
       </div>
       <div class="stores">
         <span class="lbl">Coming to</span>
-        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.5c.03-2.6 2.12-3.85 2.21-3.91-1.2-1.77-3.08-2.01-3.75-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.140-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.790-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.27 3.13-2.53.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.6c.71-.87 1.19-2.07 1.06-3.27-1.02.04-2.27.68-3.01 1.54-.66.76-1.24 1.99-1.09 3.16 1.14.09 2.31-.58 3.04-1.43"/></svg>App Store</span>
-        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.490 1.490 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-1.078-.171zm0 2.067l-11.16 11.095c.353.076.729.031 1.066-.16l13.297-7.541z"/></svg>Google Play</span>
+        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.05 12.5c.03-2.6 2.12-3.85 2.21-3.91-1.2-1.77-3.08-2.01-3.75-2.04-1.6-.16-3.12.94-3.93.94-.81 0-2.06-.92-3.39-.9-1.74.03-3.35 1.01-4.25 2.57-1.81 3.14-.46 7.79 1.3 10.34.86 1.25 1.89 2.65 3.24 2.6 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.27 3.13-2.53.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13M14.6 4.6c.71-.87 1.19-2.07 1.06-3.27-1.02.04-2.27.68-3.01 1.54-.66.76-1.24 1.99-1.09 3.16 1.14.09 2.31-.58 3.04-1.43"/></svg>App Store</span>
+        <span class="store"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-1.078-.171zm0 2.067l-11.16 11.095c.353.076.729.031 1.066-.16l13.297-7.541z"/></svg>Google Play</span>
       </div>
     </div>
   </main>
 
   <footer>© 2026 Guidr · <a href="https://x.com/guidrtravel" target="_blank" rel="noopener">@guidrtravel</a></footer>
+</div>
 </div>
 
 <script>
@@ -256,9 +271,16 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
    edge (dispersion), and lit by a specular rim that leans toward the pointer.
    Soft contact shadows are drawn in the same pass. If WebGL2 or the image isn't
    available, the page quietly keeps its CSS frosted-glass fallback.
+
+   The canvas covers the whole stage (not the window) and scrolls WITH the
+   page, and every position is measured relative to the stage. So scrolling
+   never needs a redraw and the glass can't lag behind or slide off its
+   element. Sizes come from the stage itself, never window.innerWidth (which
+   includes the scrollbar on Windows and used to shift the glass sideways).
    ====================================================================== */
 (function(){
   const canvas = document.getElementById('glass');
+  const stage = document.getElementById('stage');
   const img = document.getElementById('bgimg');
   const root = document.documentElement;
   img.addEventListener('load', function(){ img.classList.add('ready'); }, { once:true });
@@ -423,6 +445,7 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
     .sort(function(a, b){ return (KIND[a.dataset.glass] === 0 ? -1 : 0) - (KIND[b.dataset.glass] === 0 ? -1 : 0); })
     .slice(0, 10);
 
+  const MAX_SIDE = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 8192);
   let tex = null, texW = 0, texH = 0;
   function upload(){
     try{
@@ -449,9 +472,10 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
     }catch(err){ console.warn('glass texture:', err); return false; }
   }
 
+  // pointer kept in viewport coords; converted to stage coords each frame
   let pointer = null, lastKey = '';
   addEventListener('pointermove', function(e){ if (e.pointerType === 'mouse') pointer = [e.clientX, e.clientY]; }, { passive:true });
-  addEventListener('pointerleave', function(){ pointer = null; });
+  document.addEventListener('pointerleave', function(){ pointer = null; });
 
   function effOpacity(el){
     let o = 1;
@@ -467,44 +491,50 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
   function frame(){
     requestAnimationFrame(frame);
     if (!tex) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const vw = innerWidth, vh = innerHeight;
-    const cw = Math.round(vw * dpr), ch = Math.round(vh * dpr);
+    const sr = stage.getBoundingClientRect();
+    const sw = stage.clientWidth, shh = stage.clientHeight;
+    if (sw < 2 || shh < 2) return;
+    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(dpr, MAX_SIDE / sw, MAX_SIDE / shh);
+    const cw = Math.round(sw * dpr), ch = Math.round(shh * dpr);
     if (canvas.width !== cw || canvas.height !== ch){ canvas.width = cw; canvas.height = ch; lastKey = ''; }
+    const W = cw / dpr, Hh = ch / dpr;   // exact drawing size in CSS px
 
-    // where the photo actually sits (object-fit: cover, anchored bottom-center)
+    // where the photo actually sits inside the stage (object-fit: cover, anchored bottom-center)
     const box = img.getBoundingClientRect();
     const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
     const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-    const ix = box.left + (box.width - iw) / 2, iy = box.top + (box.height - ih);
+    const ix = box.left - sr.left + (box.width - iw) / 2, iy = box.top - sr.top + (box.height - ih);
 
     let n = 0, key = cw + ',' + ch + ',' + ix.toFixed(1) + ',' + iy.toFixed(1) + ',' + iw.toFixed(1);
     for (let i = 0; i < els.length; i++){
       const el = els[i], r = el.getBoundingClientRect();
-      if (r.width < 2 || r.bottom < -60 || r.top > vh + 60) continue;
+      if (r.width < 2 || r.height < 2) continue;
       const op = effOpacity(el);
       if (op <= 0) continue;
       const cs = getComputedStyle(el);
-      rects.set([r.left, r.top, r.width, r.height], n * 4);
+      const x = r.left - sr.left, y = r.top - sr.top;
+      rects.set([x, y, r.width, r.height], n * 4);
       params.set([parseFloat(cs.borderTopLeftRadius) || 0, KIND[el.dataset.glass] || 0, parseFloat(el.dataset.blur) || 10, op], n * 4);
-      key += '|' + r.left.toFixed(1) + ',' + r.top.toFixed(1) + ',' + r.width.toFixed(1) + ',' + r.height.toFixed(1) + ',' + op.toFixed(3);
+      key += '|' + x.toFixed(1) + ',' + y.toFixed(1) + ',' + r.width.toFixed(1) + ',' + r.height.toFixed(1) + ',' + op.toFixed(3);
       n++;
     }
-    if (pointer) key += '|p' + pointer[0] + ',' + pointer[1];
+    const lx = pointer ? pointer[0] - sr.left : 0, ly = pointer ? pointer[1] - sr.top : 0;
+    if (pointer) key += '|p' + lx.toFixed(0) + ',' + ly.toFixed(0);
     if (key === lastKey) return;
     lastKey = key;
 
     gl.viewport(0, 0, cw, ch);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1i(U.uTex, 0);
-    gl.uniform2f(U.uRes, vw, vh);
+    gl.uniform2f(U.uRes, W, Hh);
     gl.uniform1f(U.uDpr, dpr);
     gl.uniform4f(U.uImg, ix, iy, iw, ih);
     gl.uniform2f(U.uTexSize, texW, texH);
     gl.uniform1i(U.uN, n);
     gl.uniform4fv(U.uRect, rects);
     gl.uniform4fv(U.uP, params);
-    gl.uniform2f(U.uLight, pointer ? pointer[0] : 0, pointer ? pointer[1] : 0);
+    gl.uniform2f(U.uLight, lx, ly);
     gl.uniform1f(U.uHasLight, pointer ? 1 : 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
