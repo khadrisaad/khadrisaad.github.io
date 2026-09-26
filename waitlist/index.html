@@ -53,7 +53,7 @@ body{
    hides). Above it the stage is the same deep blue as the top of the sky. */
 .stage{position:relative;min-height:100vh;min-height:100svh;overflow:hidden;background:var(--sky)}
 .bg{
-  position:absolute;left:0;right:0;bottom:0;height:100vh;height:100svh;z-index:0;overflow:hidden;
+  position:fixed;inset:0;z-index:0;overflow:hidden;
   background:linear-gradient(var(--sky),#1E78E6 70%,#3FA3F0);
 }
 .bg img{
@@ -67,7 +67,7 @@ body{
   position:absolute;inset:0;z-index:0;pointer-events:none;
   background:linear-gradient(to top, rgba(2,24,58,.42) 0%, rgba(2,24,58,0) 16%);
 }
-#glass{position:absolute;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
+#glass{position:fixed;left:0;top:0;width:100%;height:100%;z-index:1;pointer-events:none;display:none}
 html.gl #glass{display:block}
 
 .page{position:relative;z-index:2;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;padding:0 24px}
@@ -272,15 +272,11 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
    Soft contact shadows are drawn in the same pass. If WebGL2 or the image isn't
    available, the page quietly keeps its CSS frosted-glass fallback.
 
-   The canvas covers the whole stage (not the window) and scrolls WITH the
-   page, and every position is measured relative to the stage. So scrolling
-   never needs a redraw and the glass can't lag behind or slide off its
-   element. Sizes come from the stage itself, never window.innerWidth (which
-   includes the scrollbar on Windows and used to shift the glass sideways).
+   The canvas is fixed (pinned to viewport), and positions are measured relative
+   to the viewport, so the glass aligns with elements even as the page scrolls.
    ====================================================================== */
 (function(){
   const canvas = document.getElementById('glass');
-  const stage = document.getElementById('stage');
   const img = document.getElementById('bgimg');
   const root = document.documentElement;
   img.addEventListener('load', function(){ img.classList.add('ready'); }, { once:true });
@@ -445,7 +441,6 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
     .sort(function(a, b){ return (KIND[a.dataset.glass] === 0 ? -1 : 0) - (KIND[b.dataset.glass] === 0 ? -1 : 0); })
     .slice(0, 10);
 
-  const MAX_SIDE = Math.min(gl.getParameter(gl.MAX_TEXTURE_SIZE), 8192);
   let tex = null, texW = 0, texH = 0;
   function upload(){
     try{
@@ -472,7 +467,7 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
     }catch(err){ console.warn('glass texture:', err); return false; }
   }
 
-  // pointer kept in viewport coords; converted to stage coords each frame
+  // pointer kept in viewport coords
   let pointer = null, lastKey = '';
   addEventListener('pointermove', function(e){ if (e.pointerType === 'mouse') pointer = [e.clientX, e.clientY]; }, { passive:true });
   document.addEventListener('pointerleave', function(){ pointer = null; });
@@ -491,20 +486,16 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
   function frame(){
     requestAnimationFrame(frame);
     if (!tex) return;
-    const sr = stage.getBoundingClientRect();
-    const sw = stage.clientWidth, shh = stage.clientHeight;
-    if (sw < 2 || shh < 2) return;
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
-    dpr = Math.min(dpr, MAX_SIDE / sw, MAX_SIDE / shh);
-    const cw = Math.round(sw * dpr), ch = Math.round(shh * dpr);
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const cw = Math.round(vw * dpr), ch = Math.round(vh * dpr);
     if (canvas.width !== cw || canvas.height !== ch){ canvas.width = cw; canvas.height = ch; lastKey = ''; }
-    const W = cw / dpr, Hh = ch / dpr;   // exact drawing size in CSS px
 
-    // where the photo actually sits inside the stage (object-fit: cover, anchored bottom-center)
+    // where the photo actually sits (object-fit: cover, anchored bottom-center)
     const box = img.getBoundingClientRect();
     const s = Math.max(box.width / img.naturalWidth, box.height / img.naturalHeight);
     const iw = img.naturalWidth * s, ih = img.naturalHeight * s;
-    const ix = box.left - sr.left + (box.width - iw) / 2, iy = box.top - sr.top + (box.height - ih);
+    const ix = box.left + (box.width - iw) / 2, iy = box.top + (box.height - ih);
 
     let n = 0, key = cw + ',' + ch + ',' + ix.toFixed(1) + ',' + iy.toFixed(1) + ',' + iw.toFixed(1);
     for (let i = 0; i < els.length; i++){
@@ -513,28 +504,26 @@ html.no-gl [data-glass="tint"]{background:linear-gradient(145deg,#FFA04A,#FF6A00
       const op = effOpacity(el);
       if (op <= 0) continue;
       const cs = getComputedStyle(el);
-      const x = r.left - sr.left, y = r.top - sr.top;
-      rects.set([x, y, r.width, r.height], n * 4);
+      rects.set([r.left, r.top, r.width, r.height], n * 4);
       params.set([parseFloat(cs.borderTopLeftRadius) || 0, KIND[el.dataset.glass] || 0, parseFloat(el.dataset.blur) || 10, op], n * 4);
-      key += '|' + x.toFixed(1) + ',' + y.toFixed(1) + ',' + r.width.toFixed(1) + ',' + r.height.toFixed(1) + ',' + op.toFixed(3);
+      key += '|' + r.left.toFixed(1) + ',' + r.top.toFixed(1) + ',' + r.width.toFixed(1) + ',' + r.height.toFixed(1) + ',' + op.toFixed(3);
       n++;
     }
-    const lx = pointer ? pointer[0] - sr.left : 0, ly = pointer ? pointer[1] - sr.top : 0;
-    if (pointer) key += '|p' + lx.toFixed(0) + ',' + ly.toFixed(0);
+    if (pointer) key += '|p' + pointer[0].toFixed(0) + ',' + pointer[1].toFixed(0);
     if (key === lastKey) return;
     lastKey = key;
 
     gl.viewport(0, 0, cw, ch);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.uniform1i(U.uTex, 0);
-    gl.uniform2f(U.uRes, W, Hh);
+    gl.uniform2f(U.uRes, vw, vh);
     gl.uniform1f(U.uDpr, dpr);
     gl.uniform4f(U.uImg, ix, iy, iw, ih);
     gl.uniform2f(U.uTexSize, texW, texH);
     gl.uniform1i(U.uN, n);
     gl.uniform4fv(U.uRect, rects);
     gl.uniform4fv(U.uP, params);
-    gl.uniform2f(U.uLight, lx, ly);
+    gl.uniform2f(U.uLight, pointer ? pointer[0] : 0, pointer ? pointer[1] : 0);
     gl.uniform1f(U.uHasLight, pointer ? 1 : 0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
